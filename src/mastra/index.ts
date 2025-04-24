@@ -6,6 +6,11 @@ import { env } from "../env";
 import { createEmbedding } from "../emebedding/create-embedding";
 import { metadataIdExists } from "../emebedding/embedding-exists";
 import { constructGenerationPrompt } from "../generation/construct-generation";
+import {
+  generateTranscript,
+  getTranscriptFromDB,
+  saveTranscriptToDB,
+} from "../emebedding/get-transcripts";
 
 export const mastra = new Mastra({
   agents: { testAgent, generationAgent },
@@ -39,6 +44,36 @@ export const mastra = new Mastra({
           const agent = await c.get("mastra").getAgent("testAgent");
           const response = await agent.stream("What is your name?");
           return response.toDataStreamResponse();
+        },
+      }),
+      registerApiRoute("/generate-transcript", {
+        method: "GET",
+        handler: async (c) => {
+          try {
+            const videoId = c.req.query("videoId");
+            if (!videoId) {
+              return c.json({ success: false, error: "Video ID is required" });
+            }
+            let transcript = await getTranscriptFromDB(videoId);
+            if (transcript) {
+              return c.json({ success: true, transcript });
+            }
+            const newTranscript = await generateTranscript(videoId);
+            if (!newTranscript) {
+              return c.json({
+                success: false,
+                error: "Failed to generate transcript",
+              });
+            }
+            await saveTranscriptToDB(videoId, JSON.stringify(newTranscript));
+            return c.json({ success: true, transcript: newTranscript });
+          } catch (error) {
+            console.error(error);
+            return c.json({
+              success: false,
+              error: "Failed to generate transcript",
+            });
+          }
         },
       }),
       //--------------------------------
@@ -79,7 +114,6 @@ export const mastra = new Mastra({
             message,
             videoId,
           });
-          console.log(formattedMessage);
           const response = await generationAgent.stream(
             [
               {
@@ -88,8 +122,8 @@ export const mastra = new Mastra({
               },
             ],
             {
-              threadId: userId,
-              resourceId: videoId,
+              threadId: videoId,
+              resourceId: userId,
             }
           );
           const encoder = new TextEncoder();
@@ -114,7 +148,6 @@ export const mastra = new Mastra({
                   break;
                 }
               }
-
               try {
                 await writer.write(encoder.encode("data: [DONE]\n\n"));
               } catch (closeError) {

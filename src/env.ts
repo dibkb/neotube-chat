@@ -13,6 +13,7 @@ const envSchema = z.object({
   OPENAI_API_KEY: z.string().min(1),
   FRONTEND_URL: z.string().url().default("http://localhost:3000"),
   INDEX_NAME: z.string().default("neoTubeEmbeddings"),
+  POSTGRES_CONNECTION_STRING_TRANSCRIPT: z.string().url(),
 });
 
 // Validate the environment variables

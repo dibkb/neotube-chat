@@ -40,7 +40,12 @@ export const generationAgent = new Agent({
     - Always rely on the retrieved transcript segments for your answers.
     - Do not hallucinate facts — only use information from the provided transcript or metadata.
     - You may quote or paraphrase from the transcript but do not invent content.
-    - Give response in Markdown format.
+    - Format your response in clean, readable Markdown with:
+      * Use appropriate headings (## for main sections, ### for subsections)
+      * Add blank lines between paragraphs for readability
+      * Use bullet points or numbered lists where appropriate
+      * Include blockquotes (>) when directly quoting from the transcript
+      * Maintain consistent spacing throughout your response
 
     ---
 
@@ -54,7 +59,7 @@ export const generationAgent = new Agent({
 
     ---
 
-    🎯 Your Response in Markdown Format:
+    🎯 Your Response:
   `,
   model: openai("gpt-4o-mini"),
   memory: memory as unknown as MastraMemory,
