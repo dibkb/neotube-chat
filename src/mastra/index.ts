@@ -1,19 +1,23 @@
 import { Mastra } from "@mastra/core";
 import { registerApiRoute } from "@mastra/core/server";
 import { testAgent } from "./agents/test";
+import { env } from "../env";
+import { createEmbedding } from "../emebedding/create-embedding";
+
 export const mastra = new Mastra({
   agents: { testAgent },
   server: {
     port: Number(process.env.PORT) || 4111,
     timeout: 300000,
     cors: {
-      origin: process.env.FRONTEND_URL
-        ? [process.env.FRONTEND_URL]
-        : [
-            "http://localhost:3000",
-            "http://localhost:3001",
-            "http://localhost:5173",
-          ],
+      origin:
+        env.ENVIRONMENT === "production"
+          ? [env.FRONTEND_URL]
+          : [
+              "http://localhost:3000",
+              "http://localhost:3001",
+              "http://localhost:5173",
+            ],
       allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       allowHeaders: ["Content-Type", "Authorization"],
       credentials: true,
@@ -39,6 +43,17 @@ export const mastra = new Mastra({
         method: "POST",
         handler: async (c) => {
           const videoId = c.req.param("videoId");
+          if (!videoId) {
+            return c.json({ success: false, error: "Video ID is required" });
+          }
+          const { success } = await createEmbedding(videoId);
+          if (!success) {
+            return c.json({
+              success: false,
+              error: "Failed to create embedding",
+            });
+          }
+          return c.json({ success: true });
         },
       }),
     ],

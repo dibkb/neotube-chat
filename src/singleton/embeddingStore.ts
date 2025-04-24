@@ -1,11 +1,12 @@
 import { PgVector } from "@mastra/pg";
+import { env } from "../env";
 
 export class EmbeddingStore {
   private static instance: EmbeddingStore;
   public store: PgVector;
   private constructor() {
     this.store = new PgVector({
-      connectionString: process.env.POSTGRES_CONNECTION_STRING || "",
+      connectionString: env.POSTGRES_CONNECTION_STRING || "",
     });
   }
 

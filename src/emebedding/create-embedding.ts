@@ -1,9 +1,9 @@
 import { MDocument } from "@mastra/rag";
-import { PgVector } from "@mastra/pg";
 import { openai } from "@ai-sdk/openai";
 import { embedMany } from "ai";
 import { getTranscripts } from "./get-transcripts";
 import { EmbeddingStore } from "../singleton/embeddingStore";
+import { env } from "../env";
 
 export const createEmbedding = async (videoId: string) => {
   try {
@@ -26,14 +26,16 @@ export const createEmbedding = async (videoId: string) => {
     });
 
     await vectorStore.store.upsert({
-      indexName: "neoTubeEmbeddings", // index name
-      vectors: embeddings, // array of embedding vectors
+      indexName: env.INDEX_NAME,
+      vectors: embeddings,
       metadata: chunks.map((chunk) => ({
-        text: chunk.text, // The original text content
+        text: chunk.text,
         videoId: chunk.metadata.videoId,
       })),
     });
+    return { success: true };
   } catch (error) {
     console.error(error);
+    return { success: false };
   }
 };
