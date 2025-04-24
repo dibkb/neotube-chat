@@ -15,10 +15,11 @@ export const getTranscripts = async (videoId: string) => {
   // If not in database, fetch from YouTube
   let text = "";
   try {
-    const existingTranscript = await getTranscriptFromDB(videoId);
+    const existingTranscript = (await getTranscriptFromDB(
+      videoId
+    )) as unknown as SubtitleOutput;
     if (existingTranscript) {
-      const captions = JSON.parse(existingTranscript) as SubtitleOutput;
-      captions.forEach((caption) => {
+      existingTranscript.forEach((caption) => {
         text += caption.text + " ";
       });
       return text;
@@ -38,7 +39,7 @@ export const getTranscripts = async (videoId: string) => {
 
 export const getTranscriptFromDB = async (
   videoId: string
-): Promise<string | null> => {
+): Promise<SubtitleOutput | null> => {
   try {
     const transcriptPool = EmbeddingStore.getInstance().transcriptPool;
     const query = `
