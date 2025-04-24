@@ -3,6 +3,7 @@ import { registerApiRoute } from "@mastra/core/server";
 import { testAgent } from "./agents/test";
 import { env } from "../env";
 import { createEmbedding } from "../emebedding/create-embedding";
+import { metadataIdExists } from "../emebedding/embedding-exists";
 
 export const mastra = new Mastra({
   agents: { testAgent },
@@ -39,21 +40,25 @@ export const mastra = new Mastra({
         },
       }),
       //--------------------------------
-      registerApiRoute(`/prepare-chat-agent/{videoId}`, {
+      registerApiRoute(`/prepare-chat-agent`, {
         method: "POST",
         handler: async (c) => {
-          const videoId = c.req.param("videoId");
+          const { videoId } = await c.req.json();
           if (!videoId) {
             return c.json({ success: false, error: "Video ID is required" });
           }
-          const { success } = await createEmbedding(videoId);
+          const exists = await metadataIdExists(videoId);
+          if (exists) {
+            return c.json({ success: true });
+          }
+          const { success, length } = await createEmbedding(videoId);
           if (!success) {
             return c.json({
               success: false,
               error: "Failed to create embedding",
             });
           }
-          return c.json({ success: true });
+          return c.json({ success: true, length });
         },
       }),
     ],

@@ -33,9 +33,9 @@ export const createEmbedding = async (videoId: string) => {
         videoId: chunk.metadata.videoId,
       })),
     });
-    return { success: true };
+    return { success: true, length: chunks.length };
   } catch (error) {
     console.error(error);
-    return { success: false };
+    return { success: false, length: 0 };
   }
 };
