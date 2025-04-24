@@ -20,6 +20,12 @@ importers:
       '@mastra/rag':
         specifier: ^0.1.19
         version: 0.1.19(ai@4.3.9(react@19.1.0)(zod@3.24.3))(react@19.1.0)(tree-sitter@0.22.4)(web-tree-sitter@0.24.7)(ws@8.18.1)
+      ai:
+        specifier: ^4.3.9
+        version: 4.3.9(react@19.1.0)(zod@3.24.3)
+      dotenv:
+        specifier: ^16.5.0
+        version: 16.5.0
       youtube-captions-scraper:
         specifier: ^2.0.3
         version: 2.0.3

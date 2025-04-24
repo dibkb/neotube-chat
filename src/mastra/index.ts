@@ -1,7 +1,6 @@
 import { Mastra } from "@mastra/core";
 import { registerApiRoute } from "@mastra/core/server";
 import { testAgent } from "./agents/test";
-
 export const mastra = new Mastra({
   agents: { testAgent },
   server: {
@@ -36,6 +35,12 @@ export const mastra = new Mastra({
         },
       }),
       //--------------------------------
+      registerApiRoute(`/prepare-chat-agent/{videoId}`, {
+        method: "POST",
+        handler: async (c) => {
+          const videoId = c.req.param("videoId");
+        },
+      }),
     ],
   },
 });
