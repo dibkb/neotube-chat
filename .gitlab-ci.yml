@@ -48,7 +48,7 @@ deploy:
         sudo docker stop $CI_REGISTRY_IMAGE || true
         sudo docker rm -f $CI_REGISTRY_IMAGE || true
 
-        cd app
+        cd server
 
         sudo docker compose -f docker-compose-prod.yml up -d
 
