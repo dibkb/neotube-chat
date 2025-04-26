@@ -1,13 +1,11 @@
-import { getSubtitles, SubtitleOutput } from "youtube-captions-scraper";
+import { getYouTubeTranscript } from "../transcript/youtube-transcript";
 import { EmbeddingStore } from "../singleton/embeddingStore";
+import { Subtitle } from "../utils/subtitleParser";
 
 export const generateTranscript = async (
   videoId: string
-): Promise<SubtitleOutput> => {
-  const captions = await getSubtitles({
-    videoID: videoId,
-    lang: "en",
-  });
+): Promise<Subtitle[]> => {
+  const captions = await getYouTubeTranscript(videoId);
   return captions;
 };
 
@@ -17,7 +15,7 @@ export const getTranscripts = async (videoId: string) => {
   try {
     const existingTranscript = (await getTranscriptFromDB(
       videoId
-    )) as unknown as SubtitleOutput;
+    )) as unknown as Subtitle[];
     if (existingTranscript) {
       existingTranscript.forEach((caption) => {
         text += caption.text + " ";
@@ -26,7 +24,7 @@ export const getTranscripts = async (videoId: string) => {
     }
     const generatedTranscript = (await generateTranscript(
       videoId
-    )) as SubtitleOutput;
+    )) as Subtitle[];
     if (!generatedTranscript) {
       throw new Error("Failed to generate transcript");
     }
@@ -42,7 +40,7 @@ export const getTranscripts = async (videoId: string) => {
 
 export const getTranscriptFromDB = async (
   videoId: string
-): Promise<SubtitleOutput | null> => {
+): Promise<Subtitle[] | null> => {
   try {
     const transcriptPool = EmbeddingStore.getInstance().transcriptPool;
     const query = `

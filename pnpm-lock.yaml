@@ -32,9 +32,6 @@ importers:
       pg:
         specifier: ^8.15.5
         version: 8.15.5
-      youtube-captions-scraper:
-        specifier: ^2.0.3
-        version: 2.0.3
       zod:
         specifier: ^3.24.3
         version: 3.24.3
@@ -45,9 +42,6 @@ importers:
       '@types/pg':
         specifier: ^8.11.14
         version: 8.11.14
-      '@types/youtube-captions-scraper':
-        specifier: ^1.0.0
-        version: 1.0.0
       mastra:
         specifier: 0.5.0-alpha.9
         version: 0.5.0-alpha.9(@opentelemetry/api@1.9.0)(react@19.1.0)(typescript@5.8.3)
@@ -1655,9 +1649,6 @@ packages:
   '@types/ws@8.18.1':
     resolution: {integrity: sha512-ThVF6DCVhA8kUGy+aazFQ4kXQ7E1Ty7A3ypFOe0IcJV8O/M511G99AW24irKrW56Wt44yG9+ij8FaqoBGkuBXg==}
 
-  '@types/youtube-captions-scraper@1.0.0':
-    resolution: {integrity: sha512-IquHHliMltZE5EYTM/3yPIsydOajYg9F2egG0J/yBtxVk19zB+Eyah0HsxDkRAxCx63w7mjSAnTwAr/FMznBqw==}
-
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
 
@@ -2248,10 +2239,6 @@ packages:
 
   hast-util-whitespace@3.0.0:
     resolution: {integrity: sha512-88JUN06ipLwsnv+dVn+OIYOvAuvBMy/Qoi6O7mQHxdPXpjy+Cd6xRkWwux7DKO+4sYILtLBRIKgsdpS2gQc7qw==}
-
-  he@1.2.0:
-    resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
-    hasBin: true
 
   help-me@5.0.0:
     resolution: {integrity: sha512-7xgomUX6ADmcYzFik0HzAxh/73YlKR9bmFzf51CZwR+b6YtzU2m0u49hQCqV6SvlqIqsaxovfwdvbnsw3b/zpg==}
@@ -3116,9 +3103,6 @@ packages:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
 
-  striptags@3.2.0:
-    resolution: {integrity: sha512-g45ZOGzHDMe2bdYMdIvdAfCQkCTDMGBazSw1ypMowwGIee7ZQ5dU0rBJ8Jqgl+jAKIv4dbeE1jscZq9wid1Tkw==}
-
   strnum@1.1.2:
     resolution: {integrity: sha512-vrN+B7DBIoTTZjnPNewwhx6cBA/H+IS7rfW68n7XxC1y7uoiGQBxaKzqucGUgavX15dJgiGztLJ8vxuEzwqBdA==}
 
@@ -3343,9 +3327,6 @@ packages:
   yoctocolors@2.1.1:
     resolution: {integrity: sha512-GQHQqAopRhwU8Kt1DDM8NjibDXHC8eoh1erhGAJPEyveY9qqVeXvVikNKrDz69sHowPMorbPUrH/mx8c50eiBQ==}
     engines: {node: '>=18'}
-
-  youtube-captions-scraper@2.0.3:
-    resolution: {integrity: sha512-XT6U5wFq35P5G99M+2uwNzJFkmGUrb38u8lMMQkv9PpfTOtG8Lpotka7jEqbDnQBshDw6/hgLQV597/tldiyUg==}
 
   zod-to-json-schema@3.24.5:
     resolution: {integrity: sha512-/AuWwMP+YqiPbsJx5D6TfgRTc4kTLjsh5SOcd4bLsfUg2RcEXrFMJl1DGgdHy2aCfsIA/cr/1JM0xcB2GZji8g==}
@@ -5765,8 +5746,6 @@ snapshots:
     dependencies:
       '@types/node': 22.14.1
 
-  '@types/youtube-captions-scraper@1.0.0': {}
-
   '@ungap/structured-clone@1.3.0': {}
 
   '@upstash/redis@1.34.8':
@@ -6365,8 +6344,6 @@ snapshots:
   hast-util-whitespace@3.0.0:
     dependencies:
       '@types/hast': 3.0.4
-
-  he@1.2.0: {}
 
   help-me@5.0.0: {}
 
@@ -7266,8 +7243,6 @@ snapshots:
 
   strip-json-comments@3.1.1: {}
 
-  striptags@3.2.0: {}
-
   strnum@1.1.2: {}
 
   superjson@2.2.2:
@@ -7477,15 +7452,6 @@ snapshots:
       yoctocolors: 2.1.1
 
   yoctocolors@2.1.1: {}
-
-  youtube-captions-scraper@2.0.3:
-    dependencies:
-      axios: 1.8.4
-      he: 1.2.0
-      lodash: 4.17.21
-      striptags: 3.2.0
-    transitivePeerDependencies:
-      - debug
 
   zod-to-json-schema@3.24.5(zod@3.24.3):
     dependencies:

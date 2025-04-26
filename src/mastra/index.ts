@@ -11,6 +11,7 @@ import {
   getTranscriptFromDB,
   saveTranscriptToDB,
 } from "../emebedding/get-transcripts";
+import { getYouTubeTranscript } from "../transcript/youtube-transcript";
 
 export const mastra = new Mastra({
   agents: { testAgent, generationAgent },
@@ -46,6 +47,18 @@ export const mastra = new Mastra({
           return response.toDataStreamResponse();
         },
       }),
+      registerApiRoute("/generate-transcript-v1", {
+        method: "GET",
+        handler: async (c) => {
+          const videoId = c.req.query("videoId");
+          if (!videoId) {
+            return c.json({ success: false, error: "Video ID is required" });
+          }
+          const transcript = await getYouTubeTranscript(videoId);
+          return c.json({ success: true, transcript });
+        },
+      }),
+      //--------------------------------
       registerApiRoute("/generate-transcript", {
         method: "GET",
         handler: async (c) => {
