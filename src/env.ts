@@ -14,7 +14,6 @@ const envSchema = z.object({
   FRONTEND_URL: z.string().url().default("http://localhost:3000"),
   INDEX_NAME: z.string().default("neoTubeEmbeddings"),
   POSTGRES_CONNECTION_STRING_TRANSCRIPT: z.string().url(),
-  YOUTUBE_API_KEY: z.string().min(1),
   RAPID_API_KEY: z.string().min(1),
   RAPID_API_HOST: z.string().min(1),
 });
