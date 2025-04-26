@@ -27,12 +27,15 @@ export const getTranscripts = async (videoId: string) => {
     const generatedTranscript = (await generateTranscript(
       videoId
     )) as SubtitleOutput;
+    if (!generatedTranscript) {
+      throw new Error("Failed to generate transcript");
+    }
     generatedTranscript.forEach((caption) => {
       text += caption.text + " ";
     });
     await saveTranscriptToDB(videoId, JSON.stringify(generatedTranscript));
   } catch (error) {
-    console.error(error);
+    throw error;
   }
   return text.length > 0 ? text : null;
 };

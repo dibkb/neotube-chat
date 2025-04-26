@@ -68,7 +68,6 @@ export const mastra = new Mastra({
             await saveTranscriptToDB(videoId, JSON.stringify(newTranscript));
             return c.json({ success: true, transcript: newTranscript });
           } catch (error) {
-            console.error(error);
             return c.json({
               success: false,
               error: "Failed to generate transcript",
@@ -80,22 +79,29 @@ export const mastra = new Mastra({
       registerApiRoute(`/prepare-chat-agent`, {
         method: "POST",
         handler: async (c) => {
-          const { videoId } = await c.req.json();
-          if (!videoId) {
-            return c.json({ success: false, error: "Video ID is required" });
-          }
-          const exists = await metadataIdExists(videoId);
-          if (exists) {
-            return c.json({ success: true });
-          }
-          const { success, length } = await createEmbedding(videoId);
-          if (!success) {
+          try {
+            const { videoId } = await c.req.json();
+            if (!videoId) {
+              return c.json({ success: false, error: "Video ID is required" });
+            }
+            const exists = await metadataIdExists(videoId);
+            if (exists) {
+              return c.json({ success: true });
+            }
+            const { success, length } = await createEmbedding(videoId);
+            if (!success) {
+              return c.json({
+                success: false,
+                error: "Failed to create embedding",
+              });
+            }
+            return c.json({ success: true, length });
+          } catch (error) {
             return c.json({
               success: false,
               error: "Failed to create embedding",
             });
           }
-          return c.json({ success: true, length });
         },
       }),
       //--------------------------------

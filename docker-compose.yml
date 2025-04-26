@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  neo-tube-chat:
+    build: .
+    ports:
+      - "4111:4111"
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
