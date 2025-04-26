@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+  traefik:
+    image: traefik:v2.10
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml
+      - ./traefik/acme.json:/acme.json
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.backend-chat.brotube.borborah.xyz`)"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$1tqwerty$$EQfwSrJlJTJun6B9ZNUqQ0" # Change this
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+
+  neo-tube-chat:
+    image: dibkbs/neo-tube-chat:production
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+    expose:
+      - "4111"
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.neotube.rule=Host(`backend-chat.brotube.borborah.xyz`)"
+      - "traefik.http.services.neotube.loadbalancer.server.port=4111"
+      - "traefik.http.routers.neotube.entrypoints=websecure"
+      - "traefik.http.routers.neotube.tls=true"
+      - "traefik.http.routers.neotube.tls.certresolver=letsencrypt"
+
+networks:
+  web:
+    external: true
