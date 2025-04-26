@@ -34,7 +34,7 @@ export const mastra = new Mastra({
       registerApiRoute("/health", {
         method: "GET",
         handler: async (c) => {
-          return c.json({ message: "ok" });
+          return c.json({ message: "healthy" });
         },
       }),
       //--------------------------------
