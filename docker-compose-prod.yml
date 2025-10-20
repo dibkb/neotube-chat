@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   neo-tube-chat:
     image: dibkb/neo-tube-chat:production

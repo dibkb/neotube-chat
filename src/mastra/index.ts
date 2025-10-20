@@ -68,7 +68,8 @@ export const mastra = new Mastra({
               return c.json({ success: false, error: "Video ID is required" });
             }
             let transcript = await getTranscriptFromDB(videoId);
-            if (transcript) {
+            console.log("transcript from db", transcript);
+            if (transcript.length > 0) {
               return c.json({ success: true, transcript });
             }
             const newTranscript = await generateTranscript(videoId);

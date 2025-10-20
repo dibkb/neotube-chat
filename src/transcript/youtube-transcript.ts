@@ -1,20 +1,39 @@
 import { env } from "../env";
 
 import { parseSrtToSubtitles, Subtitle } from "../utils/subtitleParser";
+import { z } from "zod";
 
+const transcriptSchema = z.object({
+  success: z.boolean(),
+  transcript: z.array(
+    z.object({
+      text: z.string(),
+      duration: z.string(),
+      offset: z.string(),
+      lang: z.string(),
+    })
+  ),
+});
 export async function getYouTubeTranscript(
   videoId: string
 ): Promise<Subtitle[]> {
-  const response = await fetch(
-    `https://${env.RAPID_API_HOST}/download-srt/${videoId}?language=en`,
-    {
-      method: "GET",
-      headers: {
-        "x-rapidapi-host": env.RAPID_API_HOST,
-        "x-rapidapi-key": env.RAPID_API_KEY,
-      },
-    }
-  );
-  const textData = await response.text();
-  return parseSrtToSubtitles(textData);
+  const url =
+    "https://youtube-transcript3.p.rapidapi.com/api/transcript?videoId=slL7AW9q8Fc";
+  const options = {
+    method: "GET",
+    headers: {
+      "x-rapidapi-key": env.RAPID_API_KEY,
+      "x-rapidapi-host": env.RAPID_API_HOST,
+    },
+  };
+
+  try {
+    const response = await fetch(url, options);
+    const result = await response.json();
+    const parsedResult = transcriptSchema.parse(result);
+    return parseSrtToSubtitles(parsedResult);
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 }

@@ -40,7 +40,7 @@ export const getTranscripts = async (videoId: string) => {
 
 export const getTranscriptFromDB = async (
   videoId: string
-): Promise<Subtitle[] | null> => {
+): Promise<Subtitle[] | []> => {
   try {
     const transcriptPool = EmbeddingStore.getInstance().transcriptPool;
     const query = `
@@ -53,10 +53,10 @@ export const getTranscriptFromDB = async (
     if (result.rows.length > 0) {
       return result.rows[0].transcript;
     }
-    return null;
+    return [];
   } catch (error) {
     console.error("Error fetching transcript from database:", error);
-    return null;
+    return [];
   }
 };
 
