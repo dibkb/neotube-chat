@@ -18,7 +18,7 @@ export async function getYouTubeTranscript(
   videoId: string
 ): Promise<Subtitle[]> {
   const url =
-    "https://youtube-transcript3.p.rapidapi.com/api/transcript?videoId=slL7AW9q8Fc";
+    "https://youtube-transcript3.p.rapidapi.com/api/transcript?videoId=${videoId}";
   const options = {
     method: "GET",
     headers: {
